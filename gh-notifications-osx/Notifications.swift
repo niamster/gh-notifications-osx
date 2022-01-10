@@ -52,7 +52,6 @@ public struct CustomTokenConfiguration: Configuration {
 
 // Realm could not be passed between threads, so should always be created localy with
 // var realm = try! Realm()
-// This opens local DB at file:///Users/[User]/Library/Application Support/gh-osx-notifications/default.realm
 
 class GHNotification: Object {
     @Persisted var id: String
@@ -78,6 +77,7 @@ class Notifications {
             return
         }
         logger.info("Started GitHub notifications notifier")
+        logger.info("Realm DB path: \(Realm.Configuration.defaultConfiguration.fileURL!.absoluteString)")
 
         NSApp.setActivationPolicy(.prohibited)
 
