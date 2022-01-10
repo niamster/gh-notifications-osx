@@ -7,6 +7,7 @@
 
 import AppKit
 import ArgumentParser
+import Foundation
 import OctoKit
 import RealmSwift
 import RequestKit
@@ -62,6 +63,8 @@ class GHNotificationsUpdate: Object {
     @Persisted var date: Date
 }
 
+extension String: Error {}
+
 class Notifications {
     var statusItem: NSStatusItem!
 
@@ -88,6 +91,24 @@ class Notifications {
         }
     }
 
+    func readPassword() throws -> String {
+        let query: [String: AnyObject] = [
+            kSecAttrService as String: "GITHUB_API_TOKEN" as AnyObject,
+            kSecClass as String: kSecClassGenericPassword,
+            kSecMatchLimit as String: kSecMatchLimitOne,
+            kSecReturnData as String: kCFBooleanTrue
+        ]
+        var itemCopy: AnyObject?
+        _ = SecItemCopyMatching(
+            query as CFDictionary,
+            &itemCopy
+        )
+        guard let password = itemCopy as? Data else {
+            throw "Can't find GITHUB_API_TOKEN"
+        }
+        return String(decoding: password, as: UTF8.self)
+    }
+    
     @objc func openWebApp(_: AnyObject?) {
         let url = "https://github.com/notifications?query=reason%3Aparticipating+is%3Aunread"
         Process.launchedProcess(launchPath: "/usr/bin/open", arguments: [url])
@@ -143,7 +164,7 @@ class Notifications {
 
     func ghNotifications() {
         // Generate new token here https://github.com/settings/tokens
-        let token = ProcessInfo.processInfo.environment["GITHUB_API_TOKEN"]!
+        let token = try! readPassword()
         let config = CustomTokenConfiguration(token)
         let maxPerPage = 20
         Octokit(config).myNotifications(all: false, participating: true, perPage: "\(maxPerPage)") { response in
