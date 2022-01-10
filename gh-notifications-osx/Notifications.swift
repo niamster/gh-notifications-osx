@@ -9,6 +9,7 @@ import AppKit
 import ArgumentParser
 import Foundation
 import OctoKit
+import os
 import RealmSwift
 import RequestKit
 import UserNotifications
@@ -16,9 +17,6 @@ import UserNotifications
 let GitHubApiTokenName = "GitHub API token for notifications"
 
 struct Args: ParsableArguments {
-    @Flag(help: "Enable debug output.")
-    var debug = false
-
     @Flag(help: "Enable debug output of the requests tracer.")
     var traceRequests = false
 
@@ -69,6 +67,7 @@ extension String: Error {}
 
 class Notifications {
     var statusItem: NSStatusItem!
+    let logger = Logger()
 
     init() {
         NSApp.setActivationPolicy(.prohibited)
@@ -76,7 +75,7 @@ class Notifications {
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { _, error in
             if let error = error {
-                print("Failed to request authorization: \(error)")
+                self.logger.error("Failed to request authorization: '\(error.localizedDescription)'")
             }
         }
 
@@ -126,7 +125,7 @@ class Notifications {
         let notificationCenter = UNUserNotificationCenter.current()
         notificationCenter.add(request) { error in
             if let error = error {
-                print("Failed to deliver notification: \(error)")
+                self.logger.error("Failed to deliver notification: '\(error.localizedDescription)'")
             }
         }
     }
@@ -155,9 +154,7 @@ class Notifications {
         }
         if newNotifications > 0 {
             notify(newNotifications)
-            if args.debug {
-                print("\(newNotifications) new notifications.")
-            }
+            logger.debug("\(newNotifications) new notifications.")
         }
         try! realm.write {
             realm.add(GHNotificationsUpdate(value: ["id": 0, "date": now]), update: .modified)
@@ -172,11 +169,9 @@ class Notifications {
         Octokit(config).myNotifications(all: false, participating: true, perPage: "\(maxPerPage)") { response in
             switch response {
             case let .success(notifications):
-                if args.debug {
-                    print("Got \(notifications.count) notifications")
-                    for n in notifications {
-                        print("  > \(n.id!) -> \(n.subject.title!)")
-                    }
+                self.logger.debug("Got \(notifications.count) notifications")
+                for n in notifications {
+                    self.logger.debug("  > \(n.id!) -> \(n.subject.title!)")
                 }
                 var title = "\(notifications.count)"
                 if notifications.count == maxPerPage {
@@ -191,7 +186,7 @@ class Notifications {
                 }
                 self.showDelta(notifications)
             case let .failure(error):
-                print(error)
+                self.logger.error("Failed to fetch GitHub notifications: '\(error.localizedDescription)'")
             }
         }
     }
