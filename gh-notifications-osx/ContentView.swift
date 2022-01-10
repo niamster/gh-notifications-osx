@@ -11,7 +11,7 @@ struct ContentView: View {
     var notifications = Notifications()
 
     var body: some View {
-        notifications.run()
+        notifications.run(contentView: self)
         return Text("")
     }
 }

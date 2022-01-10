@@ -12,6 +12,7 @@ import OctoKit
 import os
 import RealmSwift
 import RequestKit
+import SwiftUI
 import UserNotifications
 
 let GitHubApiTokenName = "GitHub API token for notifications"
@@ -67,9 +68,17 @@ extension String: Error {}
 
 class Notifications {
     var statusItem: NSStatusItem!
+    var popover: NSPopover!
+    var error: Error?
     let logger = Logger()
 
-    init() {
+    func run(contentView: ContentView) {
+        if statusItem != nil {
+            logger.error("Double invocation")
+            return
+        }
+        logger.info("Started GitHub notifications notifier")
+
         NSApp.setActivationPolicy(.prohibited)
 
         let center = UNUserNotificationCenter.current()
@@ -81,18 +90,20 @@ class Notifications {
 
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusItem?.button?.title = "?"
-        statusItem?.button?.action = #selector(openWebApp(_:))
+        statusItem?.button?.action = #selector(onClick(_:))
         statusItem?.button?.target = self
-    }
 
-    func run() {
-        ghNotifications()
+        popover = NSPopover()
+        popover.behavior = .transient
+        popover.contentViewController = NSHostingController(rootView: contentView)
+
+        ghNotificationsSafe()
         Timer.scheduledTimer(withTimeInterval: args.refreshPeriod, repeats: true) { _ in
-            self.ghNotifications()
+            self.ghNotificationsSafe()
         }
     }
 
-    func readPassword() throws -> String {
+    func getGitHubToken() throws -> String {
         let query: [String: AnyObject] = [
             kSecAttrService as String: GitHubApiTokenName as AnyObject,
             kSecClass as String: kSecClassGenericPassword,
@@ -110,9 +121,26 @@ class Notifications {
         return String(decoding: password, as: UTF8.self)
     }
 
-    @objc func openWebApp(_: AnyObject?) {
-        let url = "https://github.com/notifications?query=reason%3Aparticipating+is%3Aunread"
-        Process.launchedProcess(launchPath: "/usr/bin/open", arguments: [url])
+    func markError() {
+        if error == nil {
+            return
+        }
+        DispatchQueue.main.async {
+            self.statusItem?.button?.attributedTitle = NSAttributedString(string: "☠", attributes: [NSAttributedString.Key.foregroundColor: NSColor.red])
+        }
+    }
+
+    @objc func onClick(_: AnyObject?) {
+        if let error = error {
+            DispatchQueue.main.async {
+                let txt = NSTextField(string: "Runtime error: '\(error.localizedDescription)'")
+                self.popover.contentViewController!.view = txt
+                self.popover.show(relativeTo: self.statusItem!.button!.bounds, of: self.statusItem!.button!, preferredEdge: NSRectEdge.maxY)
+            }
+        } else {
+            let url = "https://github.com/notifications?query=reason%3Aparticipating+is%3Aunread"
+            Process.launchedProcess(launchPath: "/usr/bin/open", arguments: [url])
+        }
     }
 
     func notify(_ newNotifications: Int) {
@@ -130,8 +158,8 @@ class Notifications {
         }
     }
 
-    func showDelta(_ notifications: [NotificationThread]) {
-        let realm = try! Realm()
+    func showDelta(_ notifications: [NotificationThread]) throws {
+        let realm = try Realm()
         let now = Date()
         if let date = realm.object(ofType: GHNotificationsUpdate.self, forPrimaryKey: 0) {
             let diff = date.date.distance(to: now)
@@ -140,7 +168,7 @@ class Notifications {
             }
         }
         let prevNotifications = Set(realm.objects(GHNotification.self).map { notification -> String in notification.id })
-        try! realm.write {
+        try realm.write {
             realm.delete(realm.objects(GHNotification.self))
         }
         var newNotifications = 0
@@ -148,7 +176,7 @@ class Notifications {
             if !prevNotifications.contains(n.id!) {
                 newNotifications += 1
             }
-            try! realm.write {
+            try realm.write {
                 realm.add(GHNotification(value: ["id": n.id!, "title": n.subject.title!]))
             }
         }
@@ -156,14 +184,24 @@ class Notifications {
             notify(newNotifications)
             logger.debug("\(newNotifications) new notifications.")
         }
-        try! realm.write {
+        try realm.write {
             realm.add(GHNotificationsUpdate(value: ["id": 0, "date": now]), update: .modified)
         }
     }
 
-    func ghNotifications() {
-        // Generate new token here https://github.com/settings/tokens
-        let token = try! readPassword()
+    func ghNotificationsSafe() {
+        error = nil
+        do {
+            try ghNotifications()
+        } catch {
+            self.error = error
+            markError()
+            logger.error("Failed to fetch GitHub notifications '\(error.localizedDescription)'")
+        }
+    }
+
+    func ghNotifications() throws {
+        let token = try getGitHubToken()
         let config = CustomTokenConfiguration(token)
         let maxPerPage = 20
         Octokit(config).myNotifications(all: false, participating: true, perPage: "\(maxPerPage)") { response in
@@ -184,9 +222,13 @@ class Notifications {
                 DispatchQueue.main.async {
                     self.statusItem?.button?.attributedTitle = NSAttributedString(string: title, attributes: attributes)
                 }
-                self.showDelta(notifications)
+                do {
+                    try self.showDelta(notifications)
+                } catch {
+                    self.logger.error("Failed to show GitHub notifications delta: '\(error.localizedDescription)'")
+                }
             case let .failure(error):
-                self.logger.error("Failed to fetch GitHub notifications: '\(error.localizedDescription)'")
+                self.error = error
             }
         }
     }
