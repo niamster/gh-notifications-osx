@@ -78,6 +78,7 @@ class Notifications {
         statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusItem?.button?.title = "?"
         statusItem?.button?.action = #selector(openWebApp(_:))
+        statusItem?.button?.target = self
     }
 
     func run() {
