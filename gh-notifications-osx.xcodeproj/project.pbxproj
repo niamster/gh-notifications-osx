@@ -11,6 +11,11 @@
 		A8479D19278BA69A001C3A41 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8479D18278BA69A001C3A41 /* ContentView.swift */; };
 		A8479D1B278BA69C001C3A41 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8479D1A278BA69C001C3A41 /* Assets.xcassets */; };
 		A8479D1E278BA69C001C3A41 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8479D1D278BA69C001C3A41 /* Preview Assets.xcassets */; };
+		A8479D27278BAAB0001C3A41 /* RequestKit in Frameworks */ = {isa = PBXBuildFile; productRef = A8479D26278BAAB0001C3A41 /* RequestKit */; };
+		A8479D2A278BAB42001C3A41 /* OctoKit in Frameworks */ = {isa = PBXBuildFile; productRef = A8479D29278BAB42001C3A41 /* OctoKit */; };
+		A8479D2D278BABA2001C3A41 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A8479D2C278BABA2001C3A41 /* RealmSwift */; };
+		A8479D2F278BABD9001C3A41 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8479D2E278BABD9001C3A41 /* Notifications.swift */; };
+		A8479D32278BAC90001C3A41 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = A8479D31278BAC90001C3A41 /* ArgumentParser */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +25,7 @@
 		A8479D1A278BA69C001C3A41 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A8479D1D278BA69C001C3A41 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A8479D1F278BA69C001C3A41 /* gh_notifications_osx.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = gh_notifications_osx.entitlements; sourceTree = "<group>"; };
+		A8479D2E278BABD9001C3A41 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +33,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8479D2D278BABA2001C3A41 /* RealmSwift in Frameworks */,
+				A8479D2A278BAB42001C3A41 /* OctoKit in Frameworks */,
+				A8479D32278BAC90001C3A41 /* ArgumentParser in Frameworks */,
+				A8479D27278BAAB0001C3A41 /* RequestKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,6 +67,7 @@
 				A8479D1A278BA69C001C3A41 /* Assets.xcassets */,
 				A8479D1F278BA69C001C3A41 /* gh_notifications_osx.entitlements */,
 				A8479D1C278BA69C001C3A41 /* Preview Content */,
+				A8479D2E278BABD9001C3A41 /* Notifications.swift */,
 			);
 			path = "gh-notifications-osx";
 			sourceTree = "<group>";
@@ -85,6 +96,12 @@
 			dependencies = (
 			);
 			name = "gh-notifications-osx";
+			packageProductDependencies = (
+				A8479D26278BAAB0001C3A41 /* RequestKit */,
+				A8479D29278BAB42001C3A41 /* OctoKit */,
+				A8479D2C278BABA2001C3A41 /* RealmSwift */,
+				A8479D31278BAC90001C3A41 /* ArgumentParser */,
+			);
 			productName = "gh-notifications-osx";
 			productReference = A8479D13278BA69A001C3A41 /* gh-notifications-osx.app */;
 			productType = "com.apple.product-type.application";
@@ -113,6 +130,12 @@
 				Base,
 			);
 			mainGroup = A8479D0A278BA69A001C3A41;
+			packageReferences = (
+				A8479D25278BAAB0001C3A41 /* XCRemoteSwiftPackageReference "RequestKit" */,
+				A8479D28278BAB42001C3A41 /* XCRemoteSwiftPackageReference "octokit" */,
+				A8479D2B278BABA2001C3A41 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				A8479D30278BAC90001C3A41 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
+			);
 			productRefGroup = A8479D14278BA69A001C3A41 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -139,6 +162,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8479D2F278BABD9001C3A41 /* Notifications.swift in Sources */,
 				A8479D19278BA69A001C3A41 /* ContentView.swift in Sources */,
 				A8479D17278BA69A001C3A41 /* gh_notifications_osxApp.swift in Sources */,
 			);
@@ -334,6 +358,64 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A8479D25278BAAB0001C3A41 /* XCRemoteSwiftPackageReference "RequestKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/niamster/RequestKit";
+			requirement = {
+				kind = revision;
+				revision = 730e96ed549cc836ae3d4fe2f18b4a8125bc5edb;
+			};
+		};
+		A8479D28278BAB42001C3A41 /* XCRemoteSwiftPackageReference "octokit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/niamster/octokit.swift";
+			requirement = {
+				kind = revision;
+				revision = 7ec5037e0b024ed147f3c7ea1f98c6c85544681c;
+			};
+		};
+		A8479D2B278BABA2001C3A41 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 10.20.2;
+			};
+		};
+		A8479D30278BAC90001C3A41 /* XCRemoteSwiftPackageReference "swift-argument-parser" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-argument-parser.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A8479D26278BAAB0001C3A41 /* RequestKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A8479D25278BAAB0001C3A41 /* XCRemoteSwiftPackageReference "RequestKit" */;
+			productName = RequestKit;
+		};
+		A8479D29278BAB42001C3A41 /* OctoKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A8479D28278BAB42001C3A41 /* XCRemoteSwiftPackageReference "octokit" */;
+			productName = OctoKit;
+		};
+		A8479D2C278BABA2001C3A41 /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A8479D2B278BABA2001C3A41 /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+		A8479D31278BAC90001C3A41 /* ArgumentParser */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A8479D30278BAC90001C3A41 /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
+			productName = ArgumentParser;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A8479D0B278BA69A001C3A41 /* Project object */;
 }
