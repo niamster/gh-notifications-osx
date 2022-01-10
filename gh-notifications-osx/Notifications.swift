@@ -13,6 +13,8 @@ import RealmSwift
 import RequestKit
 import UserNotifications
 
+let GitHubApiTokenName = "GitHub API token for notifications"
+
 struct Args: ParsableArguments {
     @Flag(help: "Enable debug output.")
     var debug = false
@@ -93,7 +95,7 @@ class Notifications {
 
     func readPassword() throws -> String {
         let query: [String: AnyObject] = [
-            kSecAttrService as String: "GITHUB_API_TOKEN" as AnyObject,
+            kSecAttrService as String: GitHubApiTokenName as AnyObject,
             kSecClass as String: kSecClassGenericPassword,
             kSecMatchLimit as String: kSecMatchLimitOne,
             kSecReturnData as String: kCFBooleanTrue
@@ -104,7 +106,7 @@ class Notifications {
             &itemCopy
         )
         guard let password = itemCopy as? Data else {
-            throw "Can't find GITHUB_API_TOKEN"
+            throw "Can't find \(GitHubApiTokenName)"
         }
         return String(decoding: password, as: UTF8.self)
     }
