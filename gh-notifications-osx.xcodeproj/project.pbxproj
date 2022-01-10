@@ -26,6 +26,7 @@
 		A8479D1D278BA69C001C3A41 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		A8479D1F278BA69C001C3A41 /* gh_notifications_osx.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = gh_notifications_osx.entitlements; sourceTree = "<group>"; };
 		A8479D2E278BABD9001C3A41 /* Notifications.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
+		A89DC1BB278CFBC70078CAAB /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +47,7 @@
 		A8479D0A278BA69A001C3A41 = {
 			isa = PBXGroup;
 			children = (
+				A89DC1BB278CFBC70078CAAB /* README.md */,
 				A8479D15278BA69A001C3A41 /* gh-notifications-osx */,
 				A8479D14278BA69A001C3A41 /* Products */,
 			);
