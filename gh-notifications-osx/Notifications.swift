@@ -74,7 +74,7 @@ class Notifications {
         NSApp.setActivationPolicy(.prohibited)
 
         let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+        center.requestAuthorization(options: [.alert, .sound, .badge]) { _, error in
             if let error = error {
                 print("Failed to request authorization: \(error)")
             }
@@ -98,7 +98,7 @@ class Notifications {
             kSecAttrService as String: GitHubApiTokenName as AnyObject,
             kSecClass as String: kSecClassGenericPassword,
             kSecMatchLimit as String: kSecMatchLimitOne,
-            kSecReturnData as String: kCFBooleanTrue
+            kSecReturnData as String: kCFBooleanTrue,
         ]
         var itemCopy: AnyObject?
         _ = SecItemCopyMatching(
@@ -110,7 +110,7 @@ class Notifications {
         }
         return String(decoding: password, as: UTF8.self)
     }
-    
+
     @objc func openWebApp(_: AnyObject?) {
         let url = "https://github.com/notifications?query=reason%3Aparticipating+is%3Aunread"
         Process.launchedProcess(launchPath: "/usr/bin/open", arguments: [url])
@@ -122,12 +122,12 @@ class Notifications {
         content.body = "Check them out!"
         let uuidString = UUID().uuidString
         let request = UNNotificationRequest(identifier: uuidString,
-                    content: content, trigger: nil)
+                                            content: content, trigger: nil)
         let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.add(request) { (error) in
-           if let error = error {
-              print("Failed to deliver notification: \(error)")
-           }
+        notificationCenter.add(request) { error in
+            if let error = error {
+                print("Failed to deliver notification: \(error)")
+            }
         }
     }
 
