@@ -163,7 +163,9 @@ class Notifications {
                 if notifications.count > 0 {
                     attributes[NSAttributedString.Key.foregroundColor] = NSColor.red
                 }
-                self.statusItem?.button?.attributedTitle = NSAttributedString(string: title, attributes: attributes)
+                DispatchQueue.main.async {
+                    self.statusItem?.button?.attributedTitle = NSAttributedString(string: title, attributes: attributes)
+                }
                 self.showDelta(notifications)
             case let .failure(error):
                 print(error)
