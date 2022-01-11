@@ -81,9 +81,9 @@ class Notifications {
             fileRotation.maxFileSize = 10 * 1024 * 1024
             fileRotation.maxArchivedFilesCount = 5
             class LogFormatter: LogFormattable {
-                func formatMessage(_ level: LogLevel, message: String, tag: String, function: String,
-                                   file: String, line: UInt, swiftLogInfo: [String: String],
-                                   label: String, date: Date, threadID: UInt64) -> String
+                func formatMessage(_ level: LogLevel, message: String, tag _: String, function: String,
+                                   file: String, line: UInt, swiftLogInfo _: [String: String],
+                                   label _: String, date: Date, threadID: UInt64) -> String
                 {
                     let date = dateFormatter(date)
                     let file = shortFileName(file)
