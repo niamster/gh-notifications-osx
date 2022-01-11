@@ -9,7 +9,8 @@ import AppKit
 import ArgumentParser
 import Foundation
 import OctoKit
-import os
+import Logging
+import LoggingSyslog
 import RealmSwift
 import RequestKit
 import SwiftUI
@@ -69,13 +70,15 @@ class Notifications {
     var statusItem: NSStatusItem!
     var popover: NSPopover!
     var error: Error?
-    let logger = Logger()
+    var logger: Logger!
 
     func run(contentView: ContentView) {
         if statusItem != nil {
             logger.error("Double invocation")
             return
         }
+        LoggingSystem.bootstrap(SyslogLogHandler.init)
+        logger = Logger(label: Bundle.main.bundleIdentifier ?? "gh-notifications-osx")
         logger.info("Started GitHub notifications notifier")
         logger.info("Realm DB path: \(Realm.Configuration.defaultConfiguration.fileURL!.absoluteString)")
 
