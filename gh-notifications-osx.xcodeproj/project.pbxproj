@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A827BE06278E0BB600BADF3F /* Puppy in Frameworks */ = {isa = PBXBuildFile; productRef = A827BE05278E0BB600BADF3F /* Puppy */; };
 		A8479D17278BA69A001C3A41 /* gh_notifications_osxApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8479D16278BA69A001C3A41 /* gh_notifications_osxApp.swift */; };
 		A8479D19278BA69A001C3A41 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8479D18278BA69A001C3A41 /* ContentView.swift */; };
 		A8479D1B278BA69C001C3A41 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8479D1A278BA69C001C3A41 /* Assets.xcassets */; };
@@ -37,6 +38,7 @@
 				A8479D2D278BABA2001C3A41 /* RealmSwift in Frameworks */,
 				A8479D2A278BAB42001C3A41 /* OctoKit in Frameworks */,
 				A8479D32278BAC90001C3A41 /* ArgumentParser in Frameworks */,
+				A827BE06278E0BB600BADF3F /* Puppy in Frameworks */,
 				A8479D27278BAAB0001C3A41 /* RequestKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -103,6 +105,7 @@
 				A8479D29278BAB42001C3A41 /* OctoKit */,
 				A8479D2C278BABA2001C3A41 /* RealmSwift */,
 				A8479D31278BAC90001C3A41 /* ArgumentParser */,
+				A827BE05278E0BB600BADF3F /* Puppy */,
 			);
 			productName = "gh-notifications-osx";
 			productReference = A8479D13278BA69A001C3A41 /* gh-notifications-osx.app */;
@@ -137,6 +140,7 @@
 				A8479D28278BAB42001C3A41 /* XCRemoteSwiftPackageReference "octokit" */,
 				A8479D2B278BABA2001C3A41 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				A8479D30278BAC90001C3A41 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
+				A827BE04278E0BB600BADF3F /* XCRemoteSwiftPackageReference "Puppy" */,
 			);
 			productRefGroup = A8479D14278BA69A001C3A41 /* Products */;
 			projectDirPath = "";
@@ -362,6 +366,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A827BE04278E0BB600BADF3F /* XCRemoteSwiftPackageReference "Puppy" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sushichop/Puppy";
+			requirement = {
+				kind = exactVersion;
+				version = 0.3.1;
+			};
+		};
 		A8479D25278BAAB0001C3A41 /* XCRemoteSwiftPackageReference "RequestKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/niamster/RequestKit";
@@ -397,6 +409,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		A827BE05278E0BB600BADF3F /* Puppy */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A827BE04278E0BB600BADF3F /* XCRemoteSwiftPackageReference "Puppy" */;
+			productName = Puppy;
+		};
 		A8479D26278BAAB0001C3A41 /* RequestKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = A8479D25278BAAB0001C3A41 /* XCRemoteSwiftPackageReference "RequestKit" */;

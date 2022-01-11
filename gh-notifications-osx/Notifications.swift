@@ -10,6 +10,7 @@ import ArgumentParser
 import Foundation
 import OctoKit
 import os
+import Puppy
 import RealmSwift
 import RequestKit
 import SwiftUI
@@ -69,14 +70,40 @@ class Notifications {
     var statusItem: NSStatusItem!
     var popover: NSPopover!
     var error: Error?
-    let logger = Logger()
+    let logger = Puppy.default
+
+    init() {
+        let bundleId = Bundle.main.bundleIdentifier ?? "gh-notifications-osx"
+        Puppy.default.add(OSLogger("os", category: "notifications"))
+        do {
+            let logPath = URL(fileURLWithPath: "Library/Logs/\(bundleId).log")
+            let fileRotation = try FileRotationLogger("file", fileURL: logPath)
+            fileRotation.maxFileSize = 10 * 1024 * 1024
+            fileRotation.maxArchivedFilesCount = 5
+            class LogFormatter: LogFormattable {
+                func formatMessage(_ level: LogLevel, message: String, tag: String, function: String,
+                                   file: String, line: UInt, swiftLogInfo: [String: String],
+                                   label: String, date: Date, threadID: UInt64) -> String
+                {
+                    let date = dateFormatter(date)
+                    let file = shortFileName(file)
+                    return "\(date) \(threadID) [\(level.emoji) \(level)] \(file)#L.\(line) \(function) \(message)"
+                }
+            }
+            fileRotation.format = LogFormatter()
+            Puppy.default.add(fileRotation)
+            os_log("Log path: '\(logPath)'")
+        } catch {
+            os_log("Failed to init file logger: \(error.localizedDescription)")
+        }
+    }
 
     func run(contentView: ContentView) {
         if statusItem != nil {
             logger.error("Double invocation")
             return
         }
-        logger.info("Started GitHub notifications notifier")
+        logger.info("Started GitHub notifications notifier: '\(Bundle.main.bundleIdentifier ?? "?")'")
         logger.info("Realm DB path: \(Realm.Configuration.defaultConfiguration.fileURL!.absoluteString)")
 
         NSApp.setActivationPolicy(.prohibited)
