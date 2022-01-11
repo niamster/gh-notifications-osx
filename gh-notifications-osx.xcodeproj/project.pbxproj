@@ -16,8 +16,6 @@
 		A8479D2D278BABA2001C3A41 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A8479D2C278BABA2001C3A41 /* RealmSwift */; };
 		A8479D2F278BABD9001C3A41 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8479D2E278BABD9001C3A41 /* Notifications.swift */; };
 		A8479D32278BAC90001C3A41 /* ArgumentParser in Frameworks */ = {isa = PBXBuildFile; productRef = A8479D31278BAC90001C3A41 /* ArgumentParser */; };
-		A8906925278D061200695BA5 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = A8906924278D061200695BA5 /* Logging */; };
-		A8906928278D064800695BA5 /* LoggingSyslog in Frameworks */ = {isa = PBXBuildFile; productRef = A8906927278D064800695BA5 /* LoggingSyslog */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,11 +35,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8479D2D278BABA2001C3A41 /* RealmSwift in Frameworks */,
-				A8906928278D064800695BA5 /* LoggingSyslog in Frameworks */,
 				A8479D2A278BAB42001C3A41 /* OctoKit in Frameworks */,
 				A8479D32278BAC90001C3A41 /* ArgumentParser in Frameworks */,
 				A8479D27278BAAB0001C3A41 /* RequestKit in Frameworks */,
-				A8906925278D061200695BA5 /* Logging in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,8 +103,6 @@
 				A8479D29278BAB42001C3A41 /* OctoKit */,
 				A8479D2C278BABA2001C3A41 /* RealmSwift */,
 				A8479D31278BAC90001C3A41 /* ArgumentParser */,
-				A8906924278D061200695BA5 /* Logging */,
-				A8906927278D064800695BA5 /* LoggingSyslog */,
 			);
 			productName = "gh-notifications-osx";
 			productReference = A8479D13278BA69A001C3A41 /* gh-notifications-osx.app */;
@@ -143,8 +137,6 @@
 				A8479D28278BAB42001C3A41 /* XCRemoteSwiftPackageReference "octokit" */,
 				A8479D2B278BABA2001C3A41 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				A8479D30278BAC90001C3A41 /* XCRemoteSwiftPackageReference "swift-argument-parser" */,
-				A8906923278D061200695BA5 /* XCRemoteSwiftPackageReference "swift-log" */,
-				A8906926278D064800695BA5 /* XCRemoteSwiftPackageReference "swift-log-syslog" */,
 			);
 			productRefGroup = A8479D14278BA69A001C3A41 /* Products */;
 			projectDirPath = "";
@@ -402,22 +394,6 @@
 				minimumVersion = 1.0.0;
 			};
 		};
-		A8906923278D061200695BA5 /* XCRemoteSwiftPackageReference "swift-log" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-log.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
-		A8906926278D064800695BA5 /* XCRemoteSwiftPackageReference "swift-log-syslog" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ianpartridge/swift-log-syslog.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -440,16 +416,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = A8479D30278BAC90001C3A41 /* XCRemoteSwiftPackageReference "swift-argument-parser" */;
 			productName = ArgumentParser;
-		};
-		A8906924278D061200695BA5 /* Logging */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A8906923278D061200695BA5 /* XCRemoteSwiftPackageReference "swift-log" */;
-			productName = Logging;
-		};
-		A8906927278D064800695BA5 /* LoggingSyslog */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = A8906926278D064800695BA5 /* XCRemoteSwiftPackageReference "swift-log-syslog" */;
-			productName = LoggingSyslog;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
