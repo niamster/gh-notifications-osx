@@ -19,3 +19,7 @@ Use Xcode, and run `Product->Run` to execute, or `Product->Archive` to create a 
 You can use `Window->Organizer->Archives` to view all available archives.
 
 To export an archive as a local app chose `Distribute App->Copy App`.
+
+# Where to find logs?
+
+The logs should be available in the OS log as well as in file at `~/Library/Containers/gh.gh-notifications-osx/Data/Library/Logs`.
