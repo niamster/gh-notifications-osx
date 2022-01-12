@@ -147,7 +147,7 @@ class Notifications {
         return String(decoding: password, as: UTF8.self)
     }
 
-    func markError() {
+    func markErrorMaybe() {
         if error == nil {
             return
         }
@@ -215,11 +215,11 @@ class Notifications {
 
     func ghNotificationsSafe() {
         error = nil
+        defer { markErrorMaybe() }
         do {
             try ghNotifications()
         } catch {
             self.error = error
-            markError()
             logger.error("Failed to fetch GitHub notifications '\(error.localizedDescription)'")
         }
     }
