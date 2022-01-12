@@ -100,7 +100,7 @@ class Notifications {
 
     func run(contentView: ContentView) {
         if statusItem != nil {
-            logger.error("Double invocation")
+            logger.error("Double invocation? Should not happen!")
             return
         }
         logger.info("Started GitHub notifications notifier: '\(Bundle.main.bundleIdentifier ?? "?")'")
@@ -108,8 +108,7 @@ class Notifications {
 
         NSApp.setActivationPolicy(.prohibited)
 
-        let center = UNUserNotificationCenter.current()
-        center.requestAuthorization(options: [.alert, .sound, .badge]) { _, error in
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _, error in
             if let error = error {
                 self.logger.error("Failed to request authorization: '\(error.localizedDescription)'")
             }
@@ -174,11 +173,9 @@ class Notifications {
         let content = UNMutableNotificationContent()
         content.title = "\(newNotifications) new notifications"
         content.body = "Check them out!"
-        let uuidString = UUID().uuidString
-        let request = UNNotificationRequest(identifier: uuidString,
-                                            content: content, trigger: nil)
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.add(request) { error in
+        let uuid = UUID().uuidString
+        let request = UNNotificationRequest(identifier: uuid, content: content, trigger: nil)
+        UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 self.logger.error("Failed to deliver notification: '\(error.localizedDescription)'")
             }
