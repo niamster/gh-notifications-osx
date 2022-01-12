@@ -1,0 +1,11 @@
+  swiftformat:
+    name: Lint
+    runs-on: macOS-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install
+        run: |
+          brew install swiftformat
+      - name: Lint
+        run: |
+          swiftformat --lint .
