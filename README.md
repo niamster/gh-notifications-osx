@@ -8,7 +8,9 @@ Before the launch one should create a [GitHub token](https://github.com/settings
 
 On the badge click, the app opens your favourite browser to show pending notifications on [GitHub](https://github.com/notifications?query=reason%3Aparticipating+is%3Aunread).
 
-To enable macOS notifications you might need to explicitly enable them in system preferences, see [this](https://support.apple.com/en-us/HT204079).
+To enable macOS notifications you might need to explicitly enable them in system preferences, see [this](https://support.apple.com/en-us/HT204079):
+![Preferences->Notifications](https://user-images.githubusercontent.com/211000/149068848-fb0239c0-4976-43ea-a556-2aa5c784d1ea.png)
+
 
 Since this is a perfect application it does not give you a way to quit it. If you really want to stop it, you should show no mercy and kill it, for example with `pkill -f gh-notifications-osx.app`.
 
