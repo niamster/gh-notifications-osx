@@ -66,13 +66,15 @@ class GHNotificationsUpdate: Object {
 
 extension String: Error {}
 
-class Notifications {
+class Notifications: NSObject, UNUserNotificationCenterDelegate {
     var statusItem: NSStatusItem!
     var popover: NSPopover!
     var error: Error?
     let logger = Puppy.default
 
-    init() {
+    override init() {
+        super.init()
+
         let bundleId = Bundle.main.bundleIdentifier ?? "gh-notifications-osx"
         Puppy.default.add(OSLogger("os", category: "notifications"))
         do {
@@ -106,8 +108,9 @@ class Notifications {
         logger.info("Started GitHub notifications notifier: '\(Bundle.main.bundleIdentifier ?? "?")'")
         logger.info("Realm DB path: \(Realm.Configuration.defaultConfiguration.fileURL!.absoluteString)")
 
-        NSApp.setActivationPolicy(.prohibited)
+        hideFromDock()
 
+        UNUserNotificationCenter.current().delegate = self
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _, error in
             if let error = error {
                 self.logger.error("Failed to request authorization: '\(error.localizedDescription)'")
@@ -147,6 +150,12 @@ class Notifications {
         return String(decoding: password, as: UTF8.self)
     }
 
+    func hideFromDock() {
+        DispatchQueue.main.async {
+            NSApp.setActivationPolicy(.prohibited)
+        }
+    }
+
     func markErrorMaybe() {
         if error == nil {
             return
@@ -180,6 +189,19 @@ class Notifications {
                 self.logger.error("Failed to deliver notification: '\(error.localizedDescription)'")
             }
         }
+    }
+
+    func userNotificationCenter(_: UNUserNotificationCenter, didReceive _: UNNotificationResponse, withCompletionHandler: () -> Void) {
+        Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { timer in
+            let activationPolicy = NSApp.activationPolicy()
+            if activationPolicy == .prohibited {
+                timer.invalidate()
+                return
+            }
+            self.logger.debug("Activation policy was altered: '\(activationPolicy)'")
+            self.hideFromDock()
+        }
+        withCompletionHandler()
     }
 
     func showDelta(_ notifications: [NotificationThread]) throws {
