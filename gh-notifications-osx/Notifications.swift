@@ -150,6 +150,11 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
         return String(decoding: password, as: UTF8.self)
     }
 
+    func openGitHubInBrowser() {
+        let url = "https://github.com/notifications?query=reason%3Aparticipating+is%3Aunread"
+        Process.launchedProcess(launchPath: "/usr/bin/open", arguments: [url])
+    }
+
     func hideFromDock() {
         DispatchQueue.main.async {
             NSApp.setActivationPolicy(.prohibited)
@@ -173,8 +178,7 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
                 self.popover.show(relativeTo: self.statusItem!.button!.bounds, of: self.statusItem!.button!, preferredEdge: NSRectEdge.maxY)
             }
         } else {
-            let url = "https://github.com/notifications?query=reason%3Aparticipating+is%3Aunread"
-            Process.launchedProcess(launchPath: "/usr/bin/open", arguments: [url])
+            openGitHubInBrowser()
         }
     }
 
@@ -205,6 +209,7 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
             self.hideFromDock()
         }
         withCompletionHandler()
+        openGitHubInBrowser()
     }
 
     func showDelta(_ notifications: [NotificationThread]) throws {
