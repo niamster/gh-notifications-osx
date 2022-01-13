@@ -184,7 +184,10 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
         content.body = "Check them out!"
         let uuid = UUID().uuidString
         let request = UNNotificationRequest(identifier: uuid, content: content, trigger: nil)
-        UNUserNotificationCenter.current().add(request) { error in
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.removeAllPendingNotificationRequests()
+        notificationCenter.removeAllDeliveredNotifications()
+        notificationCenter.add(request) { error in
             if let error = error {
                 self.logger.error("Failed to deliver notification: '\(error.localizedDescription)'")
             }
