@@ -182,16 +182,20 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
         }
     }
 
+    func resetNotifications() {
+        let notificationCenter = UNUserNotificationCenter.current()
+        notificationCenter.removeAllPendingNotificationRequests()
+        notificationCenter.removeAllDeliveredNotifications()
+    }
+
     func notify(_ newNotifications: Int) {
         let content = UNMutableNotificationContent()
         content.title = "\(newNotifications) new notifications"
         content.body = "Check them out!"
         let uuid = UUID().uuidString
         let request = UNNotificationRequest(identifier: uuid, content: content, trigger: nil)
-        let notificationCenter = UNUserNotificationCenter.current()
-        notificationCenter.removeAllPendingNotificationRequests()
-        notificationCenter.removeAllDeliveredNotifications()
-        notificationCenter.add(request) { error in
+        resetNotifications()
+        UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
                 self.logger.error("Failed to deliver notification: '\(error.localizedDescription)'")
             }
@@ -272,6 +276,9 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
                 var attributes: [NSAttributedString.Key: Any] = [:]
                 if notifications.count > 0 {
                     attributes[NSAttributedString.Key.foregroundColor] = NSColor.red
+                }
+                if notifications.count == 0 {
+                    self.resetNotifications()
                 }
                 DispatchQueue.main.async {
                     self.statusItem?.button?.attributedTitle = NSAttributedString(string: title, attributes: attributes)
