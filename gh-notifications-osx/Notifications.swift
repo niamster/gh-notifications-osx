@@ -262,7 +262,11 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
         let token = try getGitHubToken()
         let config = TokenConfiguration(token)
         let maxPerPage = 20
-        Octokit(config).myNotifications(all: false, participating: true, perPage: "\(maxPerPage)") { response in
+        // Use ephemeral session to avoid caching
+        // Aleternatively set caching policy explicitly in URLSessionConfiguration
+        // See https://developer.apple.com/documentation/foundation/nsurlrequest/1416292-init
+        let urlSession = URLSession(configuration: URLSessionConfiguration.ephemeral)
+        Octokit(config).myNotifications(urlSession, all: false, participating: true, perPage: "\(maxPerPage)") { response in
             switch response {
             case let .success(notifications):
                 self.logger.debug("Got \(notifications.count) notifications")
