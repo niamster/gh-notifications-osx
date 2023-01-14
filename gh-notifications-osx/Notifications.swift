@@ -260,7 +260,7 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
 
     func ghNotifications() throws {
         let token = try getGitHubToken()
-        let config = CustomTokenConfiguration(token)
+        let config = TokenConfiguration(token)
         let maxPerPage = 20
         Octokit(config).myNotifications(all: false, participating: true, perPage: "\(maxPerPage)") { response in
             switch response {

@@ -387,7 +387,7 @@
 			repositoryURL = "https://github.com/niamster/octokit.swift";
 			requirement = {
 				kind = revision;
-				revision = 7ec5037e0b024ed147f3c7ea1f98c6c85544681c;
+				revision = 2623c8b5ee7b639b55f9e42b6ae5a45b6643d3b0;
 			};
 		};
 		A8479D2B278BABA2001C3A41 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
