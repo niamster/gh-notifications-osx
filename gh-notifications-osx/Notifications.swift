@@ -289,6 +289,7 @@ class Notifications: NSObject, UNUserNotificationCenterDelegate {
                     self.logger.error("Failed to show GitHub notifications delta: '\(error.localizedDescription)'")
                 }
             case let .failure(error):
+                self.logger.error("Error \(error)")
                 self.error = error
             }
         }
