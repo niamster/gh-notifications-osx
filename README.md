@@ -6,6 +6,8 @@ Before the launch one should create a [GitHub token](https://github.com/settings
 
 ![GH-API-token-in-the-Keychain](https://user-images.githubusercontent.com/211000/148858206-0b571be7-5665-4870-a8f6-26a2a371583a.png)
 
+Make sure that GitHub token has access to notifications. Depending on your organisation, you may also need to allow SSO for the token.
+
 On the badge click, the app opens your favourite browser to show pending notifications on [GitHub](https://github.com/notifications?query=reason%3Aparticipating+is%3Aunread).
 
 To enable macOS notifications you might need to explicitly enable them in system preferences, see [this](https://support.apple.com/en-us/HT204079):
